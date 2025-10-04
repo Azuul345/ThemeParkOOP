@@ -8,27 +8,33 @@ namespace ThemePark
 {
     internal class Ride : Attractions
     {
-        //private string _name;
-        //private double _durationtime;
-        //private int _ageRestriction;
+        
         private bool _waterRide;
-        private double _heighRestriction;
-        //Properties
-        //public string Name { get => _name; set => _name = value; }
-        //public double DurationTime { get => _durationtime; set => _durationtime = value; }
-        //public int AgeRestriction { get => _ageRestriction; set => _ageRestriction = value; }
-        public double HeightRestriction { get => _heighRestriction; set => _heighRestriction = value; }
+        private int _heightRestriction;
+        
+
         public bool WaterRide { get => _waterRide; set => _waterRide = value; }
 
+        public int HeightRestriction 
+        { 
+            get => _heightRestriction;
+            set
+            {
+                if(value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value),"Height restriction can't be negative" );
+                }
+                _heightRestriction = value;
+            }
+        }
 
 
-        public Ride(string name, double duration, double heighrestriction, bool waterRide, int ageRestriction)
-            : base(name, duration, ageRestriction)
+
+        public Ride(string name, int durationMinutes, int heightRestriction, bool waterRide, int ageRestriction)
+            : base(name, durationMinutes, ageRestriction)
         {
-            Name = name;
-            DurationTime = duration;
-            AgeRestriction = ageRestriction;
-            HeightRestriction = heighrestriction;
+            
+            HeightRestriction = heightRestriction;
             WaterRide = waterRide;
         }
 

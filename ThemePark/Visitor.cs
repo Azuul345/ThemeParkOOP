@@ -11,32 +11,43 @@ namespace ThemePark
 
         public string Name { get; set; }
         public int Age { get; set; }
-        public double Height { get; set; }
+        public int HeightCm { get; set; }
 
-        public Visitor(string name, int age, double height)
+        public Visitor(string name, int age, int height)
         {
-            Name = name;
+            if (string.IsNullOrEmpty(name)) throw new ArgumentException("Name is requierd", nameof(name));
+            if (age < 0) throw new ArgumentOutOfRangeException(nameof(age), "Age can't be negative");
+            if (height < 0) throw new ArgumentOutOfRangeException(nameof(height), "Height must be over 0");
+
+            Name = name; //.Trim() ?? 
             Age = age;
-            Height = height;
-            
+            HeightCm = height;
+
         }
 
 
-
-
-      
-
+        public bool CanRide(Ride r)
+        {
+            return CheckHeight(r) && CheckAge(r);
+        }
 
         public bool CheckAge(Ride r)
         {
-            if (Age > r.AgeRestriction) return true;
-            else return false;
+            
+            return r.AgeRestriction == 0 || Age >= r.AgeRestriction;
         }
 
         public bool CheckHeight(Ride r)
         {
-            if (Height >= r.HeightRestriction) return true;
-            else return false;                                  
+            
+            return r.HeightRestriction == 0 || HeightCm >= r.HeightRestriction;
+        }
+
+        public string ResonForFailedRide(Ride r)
+        {
+            if(!CheckAge(r)) return $"Age has to be at least {r.AgeRestriction}";
+            if (!CheckHeight(r)) return $"Height has to be at least {r.HeightRestriction} cm";
+            return "OK";
         }
 
     }

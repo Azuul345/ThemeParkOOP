@@ -8,23 +8,39 @@ namespace ThemePark
 {
     internal class StaffMember
     {
-        Random rnd = new Random();
+        internal enum StaffRole { RideOperator, FoodVendor, Cleaner, Security, TicketSeller, Entertainer, GameMaster, RestRoomPersonal }
+
+       
+        private static readonly Random rnd = new Random();
         
+        private static readonly string[]  names = ["Robin", "Lukas", "Maria", "Lisa", "Zorro", "Thomas", "Johan", "Erik", "Sam", "Julia", "Stephanie"];
 
-        private string _name;
-        private string _role;
 
-        public string Name { get => _name; set => _name = value; }
-        public string Role { get; set; }
+        public string Name { get;  private set; }
+        public StaffRole Role { get; private set; }
 
-        string[] names = ["Robin", "Lukas", "Maria", "Lisa", "Luffy", "Thomas"];
 
         public StaffMember()
         {
-            int name = rnd.Next(names.Length);
-            Name = names[name];
+            int nameIndex = rnd.Next(names.Length);
+            Name = names[nameIndex];
+            Role = StaffRole.RideOperator;
         }
 
+        public StaffMember(string name, StaffRole role)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentException("Name is requiered ", nameof(name));
+            }
+            Name = name.Trim();
+            Role = role;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Role})";
+        }
 
 
     }
